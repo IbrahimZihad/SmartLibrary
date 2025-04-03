@@ -32,4 +32,8 @@ body {
     padding: 10px; 
     color: white; 
 }
+
+.highlight { 
+    background-color: yellow !important; 
+}
     

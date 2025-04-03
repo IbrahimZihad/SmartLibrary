@@ -25,6 +25,14 @@ $result = $conn->query($sql);
         <a href="borrowedList.php">Borrowed Books</a>
     </div>
 
+    <!-- Navbar with Search Box -->
+    <nav class="navbar bg-light mb-3">
+        <form class="d-flex" onsubmit="return searchStudent(event)">
+            <input type="text" id="searchInput" class="form-control me-2" placeholder="Search by Name or ID">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </nav>
+
     <h2 class="mb-4">Student List</h2>
 
     <table class="table table-bordered">
@@ -47,6 +55,34 @@ $result = $conn->query($sql);
             <?php endwhile; ?>
         </tbody>
     </table>
+    
+    <script>
+        function searchStudent(event) {
+            event.preventDefault(); // Prevent page reload
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let rows = document.querySelectorAll("#studentTable tbody tr");
+            let found = false;
+
+            rows.forEach(row => {
+                let studentId = row.cells[0].innerText.toLowerCase();
+                let studentName = row.cells[1].innerText.toLowerCase();
+
+                // Remove previous highlights
+                row.classList.remove("highlight");
+
+                // Check if the input matches student ID or Name
+                if (studentId.includes(input) || studentName.includes(input)) {
+                    row.scrollIntoView({ behavior: "smooth", block: "center" });
+                    row.classList.add("highlight");
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                alert("No student found with the given Name or ID.");
+            }
+        }
+    </script>
 
 </body>
 </html>
