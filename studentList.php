@@ -16,6 +16,14 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="admin.css">
 </head>
 <body class="p-4">
+    <div class="sidebar">
+        <h4 class="text-center">Admin Panel</h4>
+        <a href="adminDashboard.php">Dashboard</a>
+        <a href="studentList.php">Student List</a>
+        <a href="bookList.php">Book List</a>
+        <a href="penaltyList.php">Penalty List</a>
+        <a href="borrowedList.php">Borrowed Books</a>
+    </div>
 
     <h2 class="mb-4">Student List</h2>
 
