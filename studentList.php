@@ -26,16 +26,17 @@ $result = $conn->query($sql);
     </div>
 
     <!-- Navbar with Search Box -->
-    <nav class="navbar">
-        <form class="d-flex" onsubmit="return searchStudent(event)">
-            <input type="text" id="searchInput" class="form-control me-2" placeholder="Search by Name or ID">
+    <!-- Navbar with Search Box -->
+    <nav class="navbar bg-light mb-3">
+        <form class="d-flex" action="studentList.php" method="GET">
+            <input type="text" name="search" id="searchInput" class="form-control me-2" placeholder="Search by Name or ID" value="<?= htmlspecialchars($search) ?>">
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
     </nav>
 
     <h2 class="mb-4">Student List</h2>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="studentTable">
         <thead class="table-dark">
             <tr>
                 <th>Student ID</th>
@@ -46,7 +47,8 @@ $result = $conn->query($sql);
         </thead>
         <tbody>
             <?php while ($row = $result->fetch_assoc()) : ?>
-                <tr>
+                <!-- Add a data search attribute for easy matching -->
+                <tr id="student-<?= $row['student_id'] ?>" class="student-row" data-id="<?= $row['student_id'] ?>" data-name="<?= strtolower($row['name']) ?>">
                     <td><?= $row['student_id'] ?></td>
                     <td><a href="studentDetails.php?id=<?= $row['student_id'] ?>" class="text-decoration-none"><?= $row['name'] ?></a></td>
                     <td><?= $row['email'] ?></td>
@@ -57,32 +59,32 @@ $result = $conn->query($sql);
     </table>
 
     <script>
-        function searchStudent(event) {
-            event.preventDefault(); // Prevent page reload
-            let input = document.getElementById("searchInput");
-            let rows = document.querySelectorAll("#studentTable tbody tr");
-            let found = false;
+        document.addEventListener("DOMContentLoaded", function () {
+            // Highlight the row based on search query
+            const searchQuery = "<?= strtolower($search) ?>";
+            if (searchQuery) {
+                let rows = document.querySelectorAll(".student-row");
+                let found = false;
 
-            rows.forEach(row => {
-                let studentId = row.cells[0].innerText.toLowerCase();
-                let studentName = row.cells[1].innerText.toLowerCase();
+                rows.forEach(row => {
+                    const studentId = row.dataset.id;
+                    const studentName = row.dataset.name;
 
-                // Remove previous highlights
-                row.classList.remove("highlight");
+                    // Match name or ID with the search query
+                    if (studentId.includes(searchQuery) || studentName.includes(searchQuery)) {
+                        row.scrollIntoView({ behavior: "smooth", block: "center" }); // Scroll to the row
+                        row.classList.add("highlight"); // Highlight the row
+                        found = true;
+                    } else {
+                        row.classList.remove("highlight"); // Remove highlight if no match
+                    }
+                });
 
-                // Check if the input matches student ID or Name
-                if (studentId.includes(input) || studentName.includes(input)) {
-                    row.scrollIntoView({ behavior: "smooth", block: "center" });
-                    row.classList.add("highlight");
-                    found = true;
+                if (!found) {
+                    alert("No student found with the given Name or ID.");
                 }
-            });
-
-            if (!found) {
-                alert("No student found with the given Name or ID.");
             }
-        }
+        });
     </script>
-
 </body>
 </html>
