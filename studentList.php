@@ -26,7 +26,7 @@ $result = $conn->query($sql);
     </div>
 
     <!-- Navbar with Search Box -->
-    <nav class="navbar bg-light mb-3">
+    <nav class="navbar">
         <form class="d-flex" onsubmit="return searchStudent(event)">
             <input type="text" id="searchInput" class="form-control me-2" placeholder="Search by Name or ID">
             <button type="submit" class="btn btn-primary">Search</button>
@@ -55,7 +55,7 @@ $result = $conn->query($sql);
             <?php endwhile; ?>
         </tbody>
     </table>
-    
+
     <script>
         function searchStudent(event) {
             event.preventDefault(); // Prevent page reload
