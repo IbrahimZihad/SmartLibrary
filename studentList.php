@@ -59,7 +59,7 @@ $result = $conn->query($sql);
     <script>
         function searchStudent(event) {
             event.preventDefault(); // Prevent page reload
-            let input = document.getElementById("searchInput").value.toLowerCase();
+            let input = document.getElementById("searchInput");
             let rows = document.querySelectorAll("#studentTable tbody tr");
             let found = false;
 
