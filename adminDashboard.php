@@ -47,13 +47,20 @@ $result = $conn->query($sql);
 <!-- Main Content -->
 <div class="content">
     
-    <!-- Navbar with Date Picker -->
     <nav class="navbar">
         <form method="GET" class="d-flex">
-            <input type="date" name="date" value="<?= $selected_date ?>" class="form-control me-2">
+            <input type="date" id="datePicker" name="date" value="<?= $selected_date ?>" class="form-control me-2">
             <button type="submit" class="btn btn-light">Search</button>
         </form>
     </nav>
+
+    <script>
+        // JavaScript to restrict future dates
+        document.addEventListener("DOMContentLoaded", function () {
+            let today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+            document.getElementById("datePicker").setAttribute("max", today); // Set max date attribute
+        });
+    </script>
 
     <!-- Borrowed Books List -->
     <div class="mt-4">
