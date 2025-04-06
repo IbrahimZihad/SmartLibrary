@@ -1,10 +1,16 @@
 <?php
 // addBooks.php
-include 'connectdb.php';
+include 'copnnectdb.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $book_name = $_POST['book_name'];
     $total_copies = intval($_POST['total_copies']);
+
+    if ($total_copies < 0) {
+        echo "<script>alert('Total copies cannot be less than 0'); window.history.back();</script>";
+        exit;
+    }
+
     $available_copies = $total_copies;
 
     // Insert into booklist
@@ -53,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="text" name="book_name" required><br><br>
 
     <label>Total Copies:</label><br>
-    <input type="number" name="total_copies" required><br><br>
+    <input type="number" name="total_copies" min="0" required><br><br>
 
     <label>Cover Image:</label><br>
     <input type="file" name="cover_img" accept="image/*" required><br><br>
