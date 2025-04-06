@@ -1,6 +1,6 @@
 <?php
 // addBooks.php
-include 'copnnectdb.php';
+include 'connectdb.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $book_name = $_POST['book_name'];
