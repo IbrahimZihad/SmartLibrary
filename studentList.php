@@ -2,7 +2,7 @@
 // Database connection
 include 'connectdb.php';
 // Fetch all students
-$sql = "SELECT student_id, name, email, contact_number FROM students ORDER BY name ASC";
+$sql = "SELECT student_id, name, email, contact_number FROM students ORDER BY student_id ASC";
 $result = $conn->query($sql);
 
 $search = isset($_GET['search']) ? $_GET['search'] : '';
