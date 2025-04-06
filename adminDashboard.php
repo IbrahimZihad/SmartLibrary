@@ -6,12 +6,20 @@ include 'connectdb.php';
 $selected_date = isset($_GET['date']) ? $_GET['date'] : date("Y-m-d");
 
 // Fetch borrow records for the selected date
-$sql = "SELECT br.record_id, s.name AS student_name, b.title AS book_title, br.borrow_date, br.due_date, br.return_date, br.penalty_amount 
-        FROM borrow_records br
-        JOIN students s ON br.student_id = s.student_id
-        JOIN books b ON br.book_id = b.book_id
-        WHERE DATE(br.borrow_date) = '$selected_date'
-        ORDER BY br.borrow_date DESC";
+$sql = "SELECT 
+            s.name AS student_name, 
+            b.book_name AS book_title, 
+            bh.student_id,
+            bh.book_id,
+            bh.borrow_date, 
+            bh.due_date, 
+            bh.return_date, 
+            bh.penalty 
+        FROM borrowhistory bh
+        JOIN students s ON bh.student_id = s.student_id
+        JOIN booklist b ON bh.book_id = b.book_id
+        WHERE DATE(bh.borrow_date) = '$selected_date'
+        ORDER BY bh.borrow_date DESC";
 
 $result = $conn->query($sql);
 ?>
@@ -50,8 +58,8 @@ $result = $conn->query($sql);
     <script>
         // JavaScript to restrict future dates
         document.addEventListener("DOMContentLoaded", function () {
-            let today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-            document.getElementById("datePicker").setAttribute("max", today); // Set max date attribute
+            let today = new Date().toISOString().split('T')[0];
+            document.getElementById("datePicker").setAttribute("max", today);
         });
     </script>
 
@@ -61,7 +69,7 @@ $result = $conn->query($sql);
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th>Record ID</th>
+                    <th>Student ID</th>
                     <th>Student Name</th>
                     <th>Book Title</th>
                     <th>Borrow Date</th>
@@ -73,13 +81,13 @@ $result = $conn->query($sql);
             <tbody>
                 <?php while ($row = $result->fetch_assoc()) : ?>
                     <tr>
-                        <td><?= $row['record_id'] ?></td>
+                        <td><?= $row['student_id'] ?></td>
                         <td><?= $row['student_name'] ?></td>
                         <td><?= $row['book_title'] ?></td>
                         <td><?= $row['borrow_date'] ?></td>
                         <td><?= $row['due_date'] ?></td>
                         <td><?= $row['return_date'] ? $row['return_date'] : 'Not Returned' ?></td>
-                        <td><?= $row['penalty_amount'] > 0 ? $row['penalty_amount'] : 'No Penalty' ?></td>
+                        <td><?= $row['penalty'] > 0 ? $row['penalty'] : 'No Penalty' ?></td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
