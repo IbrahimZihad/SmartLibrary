@@ -126,7 +126,7 @@ $result = $stmt->get_result();
                     <td><?php echo htmlspecialchars($row['book_id']); ?></td>
                     <td><?php echo htmlspecialchars($row['borrow_date']); ?></td>
                     <td><?php echo htmlspecialchars($row['due_date']); ?></td>
-                    <td><?php echo htmlspecialchars($row['return_date']); ?></td>
+                    <td><?php echo htmlspecialchars($row['return_date']); ?>Not Returned</td>
                     <td><?php echo htmlspecialchars($row['borrowed_copies']); ?></td>
                     <td><?php echo htmlspecialchars($row['penalty']); ?> ৳</td>
                 </tr>
