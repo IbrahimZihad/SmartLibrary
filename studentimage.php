@@ -51,34 +51,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id']) && isse
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Upload Images</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Upload Student Images</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="p-4">
-    <div class="container">
-        <h2 class="mb-4">Upload Student Images</h2>
+<body style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('Images/background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
-        <form method="POST" enctype="multipart/form-data">
-            <!-- Hidden inputs to retain student info -->
-            <?php foreach ($_SESSION['student_data'] as $key => $value): ?>
-                <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
-            <?php endforeach; ?>
+    <!-- Modal-style Upload Card -->
+    <div class="modal-dialog" style="max-width: calc(500px + 4rem);">
+        <div class="modal-content shadow-lg p-4 rounded">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Student Images</h5>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <!-- Hidden inputs to retain student info -->
+                    <?php if (isset($_SESSION['student_data'])): ?>
+                        <?php foreach ($_SESSION['student_data'] as $key => $value): ?>
+                            <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
-            <div class="mb-3">
-                <label class="form-label">Front Image</label>
-                <input type="file" name="front_img" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Left Image</label>
-                <input type="file" name="left_img" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Right Image</label>
-                <input type="file" name="right_img" class="form-control" required>
-            </div>
+                    <div class="mb-3">
+                        <label class="form-label">Front Image</label>
+                        <input type="file" name="front_img" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Left Image</label>
+                        <input type="file" name="left_img" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Right Image</label>
+                        <input type="file" name="right_img" class="form-control" required>
+                    </div>
 
-            <button type="submit" class="btn btn-success">Register</button>
-        </form>
+                    <button type="submit" class="btn btn-success w-100">Register</button>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <p class="mb-0">Want to cancel? <a href="registration.php" class="text-danger">Go back</a></p>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>
