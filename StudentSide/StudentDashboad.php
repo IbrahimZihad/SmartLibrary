@@ -55,11 +55,11 @@ if (!isset($_SESSION['student_name'])) {
                 🎓Your Student
                 <span class="text-yellow-300 drop-shadow-lg">DashBoard</span>
             </h1>
-            <nav class="flex gap-10 text-lg font-medium">
-                <a href="notification.php" class="hover:text-yellow-300 transition-all duration-300">🔔 Notifications</a>
-                <a href="Student_borrow_history.php" class="hover:text-yellow-300 transition-all duration-300">📜 Borrowing History</a>
-                <a href="bookList.php" class="hover:text-yellow-300 transition-all duration-300">📚 Book List</a>
-            </nav>
+<nav class="flex gap-10 text-lg font-medium">
+    <a href="notification.php" class="hover:text-yellow-300 transition-all duration-300">🔔 Notifications</a>
+    <a href="Student_borrow_history.php?student_id=<?= urlencode($_SESSION['student_id']) ?>" class="hover:text-yellow-300 transition-all duration-300">📜 Borrowing History</a>
+    <a href="bookList.php" class="hover:text-yellow-300 transition-all duration-300">📚 Book List</a>
+</nav>
         </div>
     </header>
     <main class="container mx-auto px-4 py-10">

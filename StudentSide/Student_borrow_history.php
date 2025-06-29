@@ -62,9 +62,38 @@ $result = $stmt->get_result();
 <body class="bg-gradient-to-tr from-blue-100 via-purple-100 to-pink-100 min-h-screen py-10 font-sans">
 
     <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-bold text-center text-indigo-700 mb-8 animate-fadeInUp">
-            📖 Borrowing History for Student ID: <?php echo htmlspecialchars($student_id); ?>
-        </h2>
+
+        <!-- Navbar (same style as bookList.php) -->
+
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b-4 border-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 shadow-lg py-4 mb-10 w-full transition-all duration-300">
+            <div class="flex justify-between items-center w-full px-8">
+                <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-600 drop-shadow-lg tracking-wide">
+                    Smart Library
+                </h1>
+                <nav>
+                    <ul class="flex space-x-8 text-lg font-semibold">
+                        <li>
+                            <a href="bookList.php" class="text-indigo-600 hover:text-indigo-800 hover:scale-110 transition-all duration-200">📚 Book List</a>
+                        </li>
+                        <li>
+                            <a href="Student_borrow_history.php?student_id=<?= urlencode($student_id) ?>" class="text-green-600 hover:text-green-800 hover:scale-110 transition-all duration-200">📜 Your Borrow History</a>
+                        </li>
+                        <li>
+                            <a href="#cart" class="text-yellow-600 hover:text-yellow-700 hover:scale-110 transition-all duration-200">🛒 Your Cart</a>
+                        </li>
+                        <li>
+                            <a href="#wishlist" class="text-yellow-600 hover:text-yellow-700 hover:scale-110 transition-all duration-200">💖 Your Wishlist</a>
+                        </li>
+                        <li>
+                            <a href="../calculatePenalties.php" class="text-red-600 hover:text-red-800 hover:scale-110 transition-all duration-200">💰 Penalty</a>
+                        </li>
+                        <li>
+                            <a href="notification.php" class="text-indigo-600 hover:text-indigo-800 hover:scale-110 transition-all duration-200">🔔 Notification</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
 
         <form method="GET" class="flex justify-center mb-6 animate-fadeInUp">
             <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
@@ -73,23 +102,24 @@ $result = $stmt->get_result();
             <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700 transition-all">Search</button>
         </form>
 
+
         <?php if ($result->num_rows > 0): ?>
             <div class="overflow-x-auto animate-fadeInUp">
-                <table class="min-w-full bg-white rounded-xl shadow-lg">
-                    <thead class="bg-indigo-600 text-white">
+                <table class="min-w-full bg-white/90 rounded-2xl shadow-2xl border border-indigo-100 backdrop-blur">
+                    <thead class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white">
                         <tr>
-                            <th class="py-3 px-4">📚 Book Title</th>
-                            <th class="py-3 px-4">🔢 Book ID</th>
-                            <th class="py-3 px-4">📅 Borrow Date</th>
-                            <th class="py-3 px-4">📆 Due Date</th>
-                            <th class="py-3 px-4">✅ Return Date</th>
-                            <th class="py-3 px-4">📦 Borrowed</th>
-                            <th class="py-3 px-4">💰 Penalty</th>
+                            <th class="py-4 px-4 font-bold tracking-wide">📚 Book Title</th>
+                            <th class="py-4 px-4 font-bold tracking-wide">🔢 Book ID</th>
+                            <th class="py-4 px-4 font-bold tracking-wide">📅 Borrow Date</th>
+                            <th class="py-4 px-4 font-bold tracking-wide">📆 Due Date</th>
+                            <th class="py-4 px-4 font-bold tracking-wide">✅ Return Date</th>
+                            <th class="py-4 px-4 font-bold tracking-wide">📦 Borrowed</th>
+                            <th class="py-4 px-4 font-bold tracking-wide">💰 Penalty</th>
                         </tr>
                     </thead>
                     <tbody class="text-center text-gray-700">
                         <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr class="border-t hover:bg-indigo-50 transition">
+                            <tr class="border-t hover:bg-indigo-50 hover:scale-[1.02] hover:shadow-lg transition-all duration-200">
                                 <td class="py-3 px-4 font-semibold text-indigo-700"><?php echo htmlspecialchars($row['book_title']); ?></td>
                                 <td class="py-3 px-4"><?php echo htmlspecialchars($row['book_id']); ?></td>
                                 <td class="py-3 px-4"><?php echo htmlspecialchars($row['borrow_date']); ?></td>
