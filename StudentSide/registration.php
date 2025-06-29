@@ -10,7 +10,7 @@ session_start();
     <title>Student Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('Images/background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+<body style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('../Images/background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
     <!-- Registration Modal-Style Card -->
     <div class="modal-dialog ">

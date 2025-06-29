@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'connectdb.php';
+include '../connectdb.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id']) && isset($_FILES['front_img'])) {
     // Receiving student data from previous form
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id']) && isse
     $stmt2->bind_param("ssss", $student_id, $front_path, $left_path, $right_path);
     $stmt2->execute();
 
-    echo "<script>alert('Registration Successful!'); window.location.href='StudentDashboard.php';</script>";
+    echo "<script>alert('Registration Successful!'); window.location.href='StudentDashboad.php';</script>";
     exit;
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Display image upload form after first step
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id']) && isse
     <title>Upload Student Images</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('Images/background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+<body style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('../Images/background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
     <!-- Modal-style Upload Card -->
     <div class="modal-dialog" style="max-width: calc(500px + 4rem);">

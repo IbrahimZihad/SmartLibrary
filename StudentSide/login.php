@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'connectdb.php';
+include '../connectdb.php';
 
 $error = "";
 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Student Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('Images/background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+<body style="height: 100vh; display: flex; align-items: center; justify-content: center; background-image: url('../Images/background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
     <!-- Login Modal -->
     <div class="modal-dialog">

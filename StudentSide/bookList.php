@@ -1,6 +1,5 @@
 <?php
-include 'connectdb.php';
-
+include '../connectdb.php';
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
     $stmt = $conn->prepare("DELETE FROM booklist WHERE book_id = ?");
@@ -41,7 +40,7 @@ $result = $stmt->get_result();
                     <li><a href="#book-list" class="text-indigo-600 hover:underline">Book List</a></li>
                     <li><a href="#cart" class="text-green-600 hover:underline">Your Cart</a></li>
                     <li><a href="#wishlist" class="text-yellow-600 hover:underline">Your Wishlist</a></li>
-                    <li><a href="panalty.php" class="text-red-600 hover:underline">Penalty</a></li>
+                    <li><a href="../calculatePenalties.php" class="text-red-600 hover:underline">Penalty</a></li>
                     <li><a href="notification.php" class="text-white-600 hover:underline">Notification</a></li>
                 </ul>
             </nav>
