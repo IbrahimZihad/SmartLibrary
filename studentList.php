@@ -31,7 +31,7 @@ $result = $conn->query($sql);
             <ul class="nav flex-column">
                 <li class="nav-item"><a href="adminDashboard.php" class="nav-link text-white">Dashboard</a></li>
                 <li class="nav-item"><a href="studentList.php" class="nav-link text-white fw-bold">Student List</a></li>
-                <li class="nav-item"><a href="bookList.php" class="nav-link text-white">Book List</a></li>
+                <li class="nav-item"><a href="adminBookList.php" class="nav-link text-white">Book List</a></li>
                 <li class="nav-item"><a href="penaltyList.php" class="nav-link text-white">Penalty List</a></li>
                 <li class="nav-item"><a href="borrowedList.php" class="nav-link text-white">Borrowed Books</a></li>
             </ul>
