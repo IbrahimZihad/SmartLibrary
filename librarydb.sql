@@ -228,3 +228,7 @@ VALUES (101,'The Great Gatsby',10,5),
 
 INSERT INTO borrowhistory ( student_id, book_id, book_title,  borrow_date, due_date, return_date, borrowed_copies, penalty )
 VALUES ('011221498',101,'The Great Gatsby','2025-04-07','2025-04-21',NULL,1,NULL);
+
+
+
+ALTER TABLE bookimage ADD COLUMN pdf_path VARCHAR(255);
