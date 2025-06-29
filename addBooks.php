@@ -1,5 +1,4 @@
 <?php
-// addBooks.php
 include 'connectdb.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -55,16 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Add New Book</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
-<body class="bg-gradient-to-br from-purple-100 via-indigo-100 to-blue-100 text-gray-900 font-sans min-h-screen py-12 px-6">
+<body class="bg-cover bg-center text-gray-900 font-sans min-h-screen py-12 px-6" style="background-image: url('Images/background.jpg'); background-repeat: no-repeat;">
     <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <h1 class="text-3xl font-bold text-center text-indigo-700 mb-8">📘 Add New Book</h1>
+
         <form action="" method="POST" enctype="multipart/form-data" class="space-y-6">
             <div>
                 <label class="block font-medium mb-1">Book Name:</label>
@@ -96,13 +94,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="file" name="pdf_file" accept="application/pdf" required class="w-full">
             </div>
 
-            <div class="text-center">
+            <div class="flex justify-center space-x-4 pt-4">
                 <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition-all duration-300">
                     ➕ Add Book
                 </button>
+                <a href="adminBookList.php" class="bg-red-600 text-white px-6 py-3 rounded-lg shadow hover:bg-red-700 transition-all duration-300">
+                    ✖ Cancel
+                </a>
             </div>
         </form>
     </div>
 </body>
-
 </html>

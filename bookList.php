@@ -10,7 +10,7 @@ if (isset($_GET['delete_id'])) {
 }
 
 $search = $_GET['search'] ?? '';
-$sql = "SELECT bl.book_id, bl.book_name, bl.total_copies, bl.available_copies, bi.cover_img, bi.pdf_file 
+$sql = "SELECT bl.book_id, bl.book_name, bl.total_copies, bl.available_copies, bi.cover_img, bi.pdf_path AS pdf_file 
         FROM booklist bl
         LEFT JOIN bookimage bi ON bl.book_id = bi.book_id
         WHERE bl.book_name LIKE ? OR bl.book_id LIKE ?";
