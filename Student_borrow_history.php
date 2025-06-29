@@ -39,102 +39,73 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Borrowing History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f9f9f9;
-            padding: 30px;
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        h2 {
-            text-align: center;
-        }
-
-        form {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        input[type="text"] {
-            padding: 8px;
-            width: 250px;
-        }
-
-        button {
-            padding: 8px 16px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        table {
-            width: 90%;
-            margin: auto;
-            border-collapse: collapse;
-            background: #fff;
-            box-shadow: 0 0 10px #ccc;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            border: 1px solid #eee;
-            text-align: center;
-        }
-
-        th {
-            background: #4CAF50;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background: #f2f2f2;
-        }
-
-        .no-data {
-            text-align: center;
-            color: red;
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out;
         }
     </style>
 </head>
 
-<body>
+<body class="bg-gradient-to-tr from-blue-100 via-purple-100 to-pink-100 min-h-screen py-10 font-sans">
 
-    <h2>Borrowing History for Student ID: <?php echo htmlspecialchars($student_id); ?></h2>
+    <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center text-indigo-700 mb-8 animate-fadeInUp">
+            📖 Borrowing History for Student ID: <?php echo htmlspecialchars($student_id); ?>
+        </h2>
 
-    <form method="GET">
-        <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
-        <input type="text" name="search" placeholder="Search by Book Title/ ID/ Date/ type sort:title" value="<?php echo htmlspecialchars($search); ?>">
-        <button type="submit">Search</button>
-    </form>
+        <form method="GET" class="flex justify-center mb-6 animate-fadeInUp">
+            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <input type="text" name="search" placeholder="🔍 Search Book Title/ID/Date or type 'sort:title'" value="<?php echo htmlspecialchars($search); ?>"
+                class="px-4 py-2 border border-indigo-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-400 w-96">
+            <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700 transition-all">Search</button>
+        </form>
 
-    <?php if ($result->num_rows > 0): ?>
-        <table>
-            <tr>
-                <th>Book Title</th>
-                <th>Book ID</th>
-                <th>Borrow Date</th>
-                <th>Due Date</th>
-                <th>Return Date</th>
-                <th>Borrowed Copies</th>
-                <th>Penalty</th>
-            </tr>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($row['book_title']); ?></td>
-                    <td><?php echo htmlspecialchars($row['book_id']); ?></td>
-                    <td><?php echo htmlspecialchars($row['borrow_date']); ?></td>
-                    <td><?php echo htmlspecialchars($row['due_date']); ?></td>
-                    <td><?php echo htmlspecialchars($row['return_date']); ?>Not Returned</td>
-                    <td><?php echo htmlspecialchars($row['borrowed_copies']); ?></td>
-                    <td><?php echo htmlspecialchars($row['penalty']); ?> ৳</td>
-                </tr>
-            <?php endwhile; ?>
-        </table>
-    <?php else: ?>
-        <p class="no-data">No borrowing history found for this student ID or search term.</p>
-    <?php endif; ?>
+        <?php if ($result->num_rows > 0): ?>
+            <div class="overflow-x-auto animate-fadeInUp">
+                <table class="min-w-full bg-white rounded-xl shadow-lg">
+                    <thead class="bg-indigo-600 text-white">
+                        <tr>
+                            <th class="py-3 px-4">📚 Book Title</th>
+                            <th class="py-3 px-4">🔢 Book ID</th>
+                            <th class="py-3 px-4">📅 Borrow Date</th>
+                            <th class="py-3 px-4">📆 Due Date</th>
+                            <th class="py-3 px-4">✅ Return Date</th>
+                            <th class="py-3 px-4">📦 Borrowed</th>
+                            <th class="py-3 px-4">💰 Penalty</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center text-gray-700">
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <tr class="border-t hover:bg-indigo-50 transition">
+                                <td class="py-3 px-4 font-semibold text-indigo-700"><?php echo htmlspecialchars($row['book_title']); ?></td>
+                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['book_id']); ?></td>
+                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['borrow_date']); ?></td>
+                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['due_date']); ?></td>
+                                <td class="py-3 px-4"><?php echo $row['return_date'] ? htmlspecialchars($row['return_date']) : '<span class="italic text-red-500">Not Returned</span>'; ?></td>
+                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['borrowed_copies']); ?></td>
+                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['penalty']); ?> ৳</td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else: ?>
+            <p class="text-center text-red-500 text-lg mt-6 animate-fadeInUp">⚠️ No borrowing history found for this student ID or search term.</p>
+        <?php endif; ?>
+    </div>
 
 </body>
 
