@@ -28,72 +28,81 @@ $result = $conn->query($sql);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="admin.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-    <h4 class="text-center">Admin Panel</h4>
-    <a href="adminDashboard.php">Dashboard</a>
-    <a href="studentList.php">Student List</a>
-    <a href="bookList.php">Book List</a>
-    <a href="penaltyList.php">Penalty List</a>
-    <a href="borrowedList.php">Borrowed Books</a>
-</div>
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 bg-dark text-white p-3">
+            <h4 class="text-center mb-4">Admin Panel</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="adminDashboard.php" class="nav-link text-white">Dashboard</a></li>
+                <li class="nav-item"><a href="studentList.php" class="nav-link text-white">Student List</a></li>
+                <li class="nav-item"><a href="bookList.php" class="nav-link text-white">Book List</a></li>
+                <li class="nav-item"><a href="penaltyList.php" class="nav-link text-white">Penalty List</a></li>
+                <li class="nav-item"><a href="borrowedList.php" class="nav-link text-white">Borrowed Books</a></li>
+            </ul>
+        </nav>
 
-<!-- Main Content -->
-<div class="content">
-    
-    <nav class="navbar">
-        <form method="GET" class="d-flex">
-            <input type="date" id="datePicker" name="date" value="<?= $selected_date ?>" class="form-control me-2">
-            <button type="submit" class="btn btn-light">Search</button>
-        </form>
-    </nav>
+        <!-- Main Content -->
+        <main class="col-md-9 col-lg-10 p-4">
+            <!-- Top Nav/Search -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">Borrowed Books on <?= $selected_date ?></h4>
+                <form method="GET" class="d-flex">
+                    <input type="date" id="datePicker" name="date" value="<?= $selected_date ?>" class="form-control me-2" required>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
 
-    <script>
-        // JavaScript to restrict future dates
-        document.addEventListener("DOMContentLoaded", function () {
-            let today = new Date().toISOString().split('T')[0];
-            document.getElementById("datePicker").setAttribute("max", today);
-        });
-    </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    let today = new Date().toISOString().split('T')[0];
+                    document.getElementById("datePicker").setAttribute("max", today);
+                });
+            </script>
 
-    <!-- Borrowed Books List -->
-    <div class="mt-4">
-        <h4>Borrowed Books on <?= $selected_date ?></h4>
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>Student ID</th>
-                    <th>Student Name</th>
-                    <th>Book Title</th>
-                    <th>Borrow Date</th>
-                    <th>Due Date</th>
-                    <th>Return Date</th>
-                    <th>Penalty (Taka)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()) : ?>
-                    <tr>
-                        <td><?= $row['student_id'] ?></td>
-                        <td><?= $row['student_name'] ?></td>
-                        <td><?= $row['book_title'] ?></td>
-                        <td><?= $row['borrow_date'] ?></td>
-                        <td><?= $row['due_date'] ?></td>
-                        <td><?= $row['return_date'] ? $row['return_date'] : 'Not Returned' ?></td>
-                        <td><?= $row['penalty'] > 0 ? $row['penalty'] : 'No Penalty' ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+            <!-- Borrowed List Table -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Book Title</th>
+                            <th>Borrow Date</th>
+                            <th>Due Date</th>
+                            <th>Return Date</th>
+                            <th>Penalty (Taka)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($result->num_rows > 0): ?>
+                            <?php while ($row = $result->fetch_assoc()) : ?>
+                                <tr>
+                                    <td><?= $row['student_id'] ?></td>
+                                    <td><?= $row['student_name'] ?></td>
+                                    <td><?= $row['book_title'] ?></td>
+                                    <td><?= $row['borrow_date'] ?></td>
+                                    <td><?= $row['due_date'] ?></td>
+                                    <td><?= $row['return_date'] ?: '<span class="text-danger">Not Returned</span>' ?></td>
+                                    <td><?= $row['penalty'] > 0 ? $row['penalty'] : '<span class="text-success">No Penalty</span>' ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">No records found for <?= $selected_date ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
-
 </div>
 
 </body>

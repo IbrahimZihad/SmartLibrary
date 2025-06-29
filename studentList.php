@@ -19,75 +19,83 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Student List</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="admin.css">
-    <style>
-        .student-img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        .highlight {
-            background-color: #d1ecf1 !important;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="p-4">
+<body>
 
-<div class="sidebar">
-    <h4 class="text-center">Admin Panel</h4>
-    <a href="adminDashboard.php">Dashboard</a>
-    <a href="studentList.php">Student List</a>
-    <a href="bookList.php">Book List</a>
-    <a href="penaltyList.php">Penalty List</a>
-    <a href="borrowedList.php">Borrowed Books</a>
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 bg-dark text-white p-3">
+            <h4 class="text-center mb-4">Admin Panel</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="adminDashboard.php" class="nav-link text-white">Dashboard</a></li>
+                <li class="nav-item"><a href="studentList.php" class="nav-link text-white fw-bold">Student List</a></li>
+                <li class="nav-item"><a href="bookList.php" class="nav-link text-white">Book List</a></li>
+                <li class="nav-item"><a href="penaltyList.php" class="nav-link text-white">Penalty List</a></li>
+                <li class="nav-item"><a href="borrowedList.php" class="nav-link text-white">Borrowed Books</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 col-lg-10 p-4">
+            <!-- Search bar -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Student List</h2>
+                <form class="d-flex" action="studentList.php" method="GET">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Search by Name or ID" value="<?= htmlspecialchars($search) ?>">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+
+            <!-- Student table -->
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Photo</th>
+                            <th scope="col">Student ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $result->fetch_assoc()) : ?>
+                            <tr>
+                                <td>
+                                    <?php if ($row['front_img']) : ?>
+                                        <img src="<?= htmlspecialchars($row['front_img']) ?>" alt="Photo" class="rounded-circle border" style="width: 60px; height: 60px; object-fit: cover;">
+                                    <?php else : ?>
+                                        <span class="text-muted">No Photo</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= $row['student_id'] ?></td>
+                                <td>
+                                    <a href="studentDetails.php?id=<?= $row['student_id'] ?>" class="text-decoration-none"><?= $row['name'] ?></a>
+                                </td>
+                                <td><?= $row['email'] ?></td>
+                                <td><?= $row['phone'] ?></td>
+                                <td>
+                                    <form method="POST" action="deleteStudent.php" onsubmit="return confirm('Are you sure you want to delete this student?');">
+                                        <input type="hidden" name="student_id" value="<?= $row['student_id'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                        <?php if ($result->num_rows === 0): ?>
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No students found.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
 </div>
-
-<nav class="navbar bg-light mb-3">
-    <form class="d-flex" action="studentList.php" method="GET">
-        <input type="text" name="search" class="form-control me-2" placeholder="Search by Name or ID" value="<?= htmlspecialchars($search) ?>">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-</nav>
-
-<h2 class="mb-4">Student List</h2>
-
-<table class="table table-bordered align-middle">
-    <thead class="table-dark">
-        <tr>
-            <th>Photo</th>
-            <th>Student ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php while ($row = $result->fetch_assoc()) : ?>
-            <tr id="student-<?= $row['student_id'] ?>" class="student-row" data-id="<?= $row['student_id'] ?>" data-name="<?= strtolower($row['name']) ?>">
-                <td>
-                    <?php if ($row['front_img']) : ?>
-                        <img src="<?= htmlspecialchars($row['front_img']) ?>" alt="Student Photo" class="student-img">
-                    <?php else : ?>
-                        <span class="text-muted">No Photo</span>
-                    <?php endif; ?>
-                </td>
-                <td><?= $row['student_id'] ?></td>
-                <td><a href="studentDetails.php?id=<?= $row['student_id'] ?>" class="text-decoration-none"><?= $row['name'] ?></a></td>
-                <td><?= $row['email'] ?></td>
-                <td><?= $row['phone'] ?></td>
-                <td>
-                    <form method="POST" action="deleteStudent.php" onsubmit="return confirm('Are you sure you want to delete this student?');">
-                        <input type="hidden" name="student_id" value="<?= $row['student_id'] ?>">
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </tbody>
-</table>
 
 </body>
 </html>

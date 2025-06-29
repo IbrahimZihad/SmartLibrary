@@ -35,7 +35,7 @@ $result = $stmt->get_result();
 
     <header class="bg-white shadow-md py-6 mb-6">
         <div class="container mx-auto px-6 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-indigo-700">Welcome to UIU Library</h1>
+            <h1 class="text-2xl font-bold text-indigo-700">Smart Library</h1>
             <nav>
                 <ul class="flex space-x-4">
                     <li><a href="#book-list" class="text-indigo-600 hover:underline">Book List</a></li>
