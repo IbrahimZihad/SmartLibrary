@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows === 1) {
         $_SESSION['student_id'] = $student_id;
         $_SESSION['student_name'] = $result->fetch_assoc()['name'];
-        header("Location: studentDashboard.php");
+        header("Location: StudentDashboad.php");
         exit();
     } else {
         $error = "Invalid Student ID or Email!";
