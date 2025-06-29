@@ -1,6 +1,6 @@
 <?php
 // send_notifications.php
-include('dbconnection.php');
+include('../dbconnection.php');
 
 // Days before due date to notify
 $days_before_due = 3;

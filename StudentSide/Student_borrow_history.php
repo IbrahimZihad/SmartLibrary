@@ -1,5 +1,5 @@
 <?php
-include 'connectdb.php'; // Include your database connection file
+include '../connectdb.php'; // Include your database connection file
 
 $student_id = isset($_GET['student_id']) ? $_GET['student_id'] : '';
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
