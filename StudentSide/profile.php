@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'connectdb.php';
+include '../connectdb.php'; // Adjust path if necessary
 
 if (!isset($_SESSION['student_id'])) {
     header("Location: login.php");
@@ -9,21 +9,20 @@ if (!isset($_SESSION['student_id'])) {
 
 $student_id = $_SESSION['student_id'];
 
-// Join students and studentimage table to get all info
-$sql = "SELECT s.*, si.front_img FROM students s LEFT JOIN studentimage si ON s.student_id = si.student_id WHERE s.student_id = ?";
+// Fetch student and front image
+$sql = "SELECT s.*, si.front_img FROM students s 
+        LEFT JOIN studentimage si ON s.student_id = si.student_id 
+        WHERE s.student_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $student_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-// Set image path (front image)
-$photo = $user['front_img'] ?? '';
-if ($photo) {
-    // যদি path-এ StudentImage না থাকে, prepend করুন
-    if (strpos($photo, 'StudentImage/') !== 0) {
-        $photo = 'StudentImage/' . $student_id . '/' . $photo;
-    }
+// Construct image path like ../StudentImage/123/front.jpg
+if (!empty($user['front_img'])) {
+    $photo_path = "../StudentImage/" . $student_id . "/" . basename($user['front_img']);
+    $photo = file_exists($photo_path) ? $photo_path : 'default-avatar.png';
 } else {
     $photo = 'default-avatar.png';
 }
@@ -33,23 +32,53 @@ if ($photo) {
 <head>
     <meta charset="UTF-8">
     <title>My Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-light">
-    <div class="container py-5">
-        <div class="card mx-auto shadow" style="max-width: 400px;">
-            <div class="card-body text-center">
+<body class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 font-sans">
+
+    <div class="flex justify-center items-center min-h-screen px-4">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <!-- Profile Image -->
+            <div class="flex justify-center pt-4">
                 <img src="<?= htmlspecialchars($photo) ?>"
                      alt="Profile"
-                     class="rounded-circle mb-3"
-                     style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #6366f1;"
+                     class="rounded-full border-4 border-indigo-500 shadow-md"
+                     style="width: 120px; height: 120px; object-fit: cover;"
                      onerror="this.onerror=null;this.src='default-avatar.png';">
-                <h3 class="mb-1"><?= htmlspecialchars($user['name']) ?></h3>
-                <p class="text-muted mb-2"><?= htmlspecialchars($user['email']) ?></p>
-                <p class="mb-0"><strong>ID:</strong> <?= htmlspecialchars($user['student_id']) ?></p>
-                <a href="StudentDashboad.php" class="btn btn-primary mt-4">Back to Dashboard</a>
+            </div>
+
+            <!-- Student Info -->
+            <div class="mt-6 space-y-3">
+                <div class="flex justify-between border-b pb-2">
+                    <span class="font-semibold">Name:</span>
+                    <span><?= htmlspecialchars($user['name']) ?></span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="font-semibold">Phone:</span>
+                    <span><?= htmlspecialchars($user['phone']) ?></span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="font-semibold">Email:</span>
+                    <span><?= htmlspecialchars($user['email']) ?></span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="font-semibold">Department:</span>
+                    <span><?= htmlspecialchars($user['department']) ?></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="font-semibold">Student ID:</span>
+                    <span><?= htmlspecialchars($user['student_id']) ?></span>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="text-center mt-6">
+                <a href="StudentDashboad.php" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition-all duration-300">
+                    ← Back to Dashboard
+                </a>
             </div>
         </div>
     </div>
+
 </body>
 </html>
