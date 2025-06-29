@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id']) && isse
     $stmt2->bind_param("ssss", $student_id, $front_path, $left_path, $right_path);
     $stmt2->execute();
 
-    echo "<script>alert('Registration Successful!'); window.location.href='StudentDashboard.php';</script>";
+    echo "<script>alert('Registration Successful!'); window.location.href='StudentDashboad.php';</script>";
     exit;
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Display image upload form after first step
