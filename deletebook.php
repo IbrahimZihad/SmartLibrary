@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'])) {
     $conn->query("DELETE FROM booklist WHERE book_id = $book_id");
 
     // Redirect back
-    header("Location: bookList.php");
+    header("Location: adminBookList.php");
     exit;
 }
 ?>

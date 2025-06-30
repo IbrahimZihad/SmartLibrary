@@ -4,24 +4,28 @@ include '../connectdb.php'; // Include your database connection file
 $student_id = isset($_GET['student_id']) ? $_GET['student_id'] : '';
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-$query = "SELECT * FROM borrowhistory WHERE student_id = ?";
+// Fixed: Join with booklist to get book_name
+$query = "SELECT bh.*, bl.book_name 
+          FROM borrowhistory bh 
+          JOIN booklist bl ON bh.book_id = bl.book_id 
+          WHERE bh.student_id = ?";
 $params = [$student_id];
 $types = "s";
 
 // Smart filters
 if (!empty($search)) {
     if (is_numeric($search)) {
-        $query .= " AND book_id = ?";
+        $query .= " AND bh.book_id = ?";
         $types .= "i";
         $params[] = $search;
     } elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $search)) {
-        $query .= " AND borrow_date = ?";
+        $query .= " AND bh.borrow_date = ?";
         $types .= "s";
         $params[] = $search;
     } elseif (strtolower($search) === "sort:title") {
-        $query .= " ORDER BY book_title ASC";
+        $query .= " ORDER BY bl.book_name ASC";
     } else {
-        $query .= " AND book_title LIKE ?";
+        $query .= " AND bl.book_name LIKE ?";
         $types .= "s";
         $params[] = "%$search%";
     }
@@ -64,7 +68,6 @@ $result = $stmt->get_result();
     <div class="max-w-6xl mx-auto px-6">
 
         <!-- Navbar (same style as bookList.php) -->
-
         <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b-4 border-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 shadow-lg py-4 mb-10 w-full transition-all duration-300">
             <div class="flex justify-between items-center w-full px-8">
                 <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-600 drop-shadow-lg tracking-wide">
@@ -85,9 +88,6 @@ $result = $stmt->get_result();
                             <a href="#wishlist" class="text-yellow-600 hover:text-yellow-700 hover:scale-110 transition-all duration-200">💖 Your Wishlist</a>
                         </li>
                         <li>
-                            <a href="../calculatePenalties.php" class="text-red-600 hover:text-red-800 hover:scale-110 transition-all duration-200">💰 Penalty</a>
-                        </li>
-                        <li>
                             <a href="notification.php" class="text-indigo-600 hover:text-indigo-800 hover:scale-110 transition-all duration-200">🔔 Notification</a>
                         </li>
                     </ul>
@@ -96,12 +96,11 @@ $result = $stmt->get_result();
         </header>
 
         <form method="GET" class="flex justify-center mb-6 animate-fadeInUp">
-            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
-            <input type="text" name="search" placeholder="🔍 Search Book Title/ID/Date or type 'sort:title'" value="<?php echo htmlspecialchars($search); ?>"
+            <input type="hidden" name="student_id" value="<?= htmlspecialchars($student_id) ?>">
+            <input type="text" name="search" placeholder="🔍 Search Book Title/ID/Date or type 'sort:title'" value="<?= htmlspecialchars($search) ?>"
                 class="px-4 py-2 border border-indigo-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-400 w-96">
             <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700 transition-all">Search</button>
         </form>
-
 
         <?php if ($result->num_rows > 0): ?>
             <div class="overflow-x-auto animate-fadeInUp">
@@ -120,13 +119,13 @@ $result = $stmt->get_result();
                     <tbody class="text-center text-gray-700">
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr class="border-t hover:bg-indigo-50 hover:scale-[1.02] hover:shadow-lg transition-all duration-200">
-                                <td class="py-3 px-4 font-semibold text-indigo-700"><?php echo htmlspecialchars($row['book_title']); ?></td>
-                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['book_id']); ?></td>
-                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['borrow_date']); ?></td>
-                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['due_date']); ?></td>
-                                <td class="py-3 px-4"><?php echo $row['return_date'] ? htmlspecialchars($row['return_date']) : '<span class="italic text-red-500">Not Returned</span>'; ?></td>
-                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['borrowed_copies']); ?></td>
-                                <td class="py-3 px-4"><?php echo htmlspecialchars($row['penalty']); ?> ৳</td>
+                                <td class="py-3 px-4 font-semibold text-indigo-700"><?= htmlspecialchars($row['book_name']) ?></td>
+                                <td class="py-3 px-4"><?= htmlspecialchars($row['book_id']) ?></td>
+                                <td class="py-3 px-4"><?= htmlspecialchars($row['borrow_date']) ?></td>
+                                <td class="py-3 px-4"><?= htmlspecialchars($row['due_date']) ?></td>
+                                <td class="py-3 px-4"><?= $row['return_date'] ? htmlspecialchars($row['return_date']) : '<span class="italic text-red-500">Not Returned</span>' ?></td>
+                                <td class="py-3 px-4"><?= htmlspecialchars($row['borrowed_copies']) ?></td>
+                                <td class="py-3 px-4"><?= htmlspecialchars($row['penalty']) ?> ৳</td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -138,7 +137,6 @@ $result = $stmt->get_result();
     </div>
 
 </body>
-
 </html>
 
 <?php
