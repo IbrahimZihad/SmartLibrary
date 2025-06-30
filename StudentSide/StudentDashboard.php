@@ -4,6 +4,8 @@ if (!isset($_SESSION['student_name']) || !isset($_SESSION['student_id'])) {
     header('Location: login.php');
     exit();
 }
+$student_name = $_SESSION['student_name'];
+$student_id = $_SESSION['student_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +13,7 @@ if (!isset($_SESSION['student_name']) || !isset($_SESSION['student_id'])) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Portal</title>
+    <title>Student Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes fadeInUp {
@@ -19,11 +21,13 @@ if (!isset($_SESSION['student_name']) || !isset($_SESSION['student_id'])) {
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
         .animate-fade-in-up {
             animation: fadeInUp 0.6s ease-out both;
         }
@@ -31,35 +35,40 @@ if (!isset($_SESSION['student_name']) || !isset($_SESSION['student_id'])) {
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 font-sans">
-    <header class="relative bg-gradient-to-r from-indigo-600 to-blue-500 py-8 shadow-lg animate-fade-in-up">
-        <div class="container mx-auto px-4 flex flex-col items-center">
-            <div class="absolute right-8 top-8 flex items-center gap-4">
-                <div class="relative">
-                    <button id="profileBtn" type="button" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-800 px-4 py-2 rounded-full shadow transition-all duration-200 font-semibold text-white focus:outline-none">
-                        <span><?= htmlspecialchars($_SESSION['student_name']) ?></span>
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div id="profileDropdown" class="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg opacity-0 pointer-events-none transition-opacity duration-200 z-50">
-                        <a href="profile.php" class="block px-4 py-2 hover:bg-indigo-100">View Profile</a>
-                        <a href="logout.php" class="block px-4 py-2 hover:bg-indigo-100">Logout</a>
-                    </div>
+    <!-- Navbar -->
+    <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center animate-fade-in-up">
+        <!-- Left: Logo -->
+        <div class="text-indigo-700 font-bold text-xl tracking-wide">
+            📚 Smart Library
+        </div>
+
+        <!-- Center: Navigation Links -->
+        <nav class="flex gap-8 text-lg font-medium text-gray-700">
+            <a href="#" class="hover:text-indigo-600 transition">🏠 Your Dashboard</a>
+            <a href="bookList.php?student_id=<?= urlencode($student_id) ?>" class="hover:text-indigo-600 transition">📚 Books</a>
+            <a href="Student_borrow_history.php?student_id=<?= urlencode($student_id) ?>" class="hover:text-indigo-600 transition">🕘 History</a>
+            <a href="notification.php?student_id=<?= urlencode($student_id) ?>" class="hover:text-indigo-600 transition">🔔 Notifications</a>
+        </nav>
+
+        <!-- Right: Profile Dropdown -->
+        <div class="relative">
+            <button id="profileBtn" class="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-full shadow hover:bg-indigo-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A6.002 6.002 0 0112 15h0a6.002 6.002 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+            <div id="profileDropdown" class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg text-gray-800 hidden z-50">
+                <div class="px-4 py-3 border-b">
+                    <p class="font-semibold"><?= htmlspecialchars($student_name) ?></p>
+                    <p class="text-sm text-gray-500">ID: <?= htmlspecialchars($student_id) ?></p>
                 </div>
+                <a href="profile.php" class="block px-4 py-2 hover:bg-indigo-50">👤 View Profile</a>
+                <a href="logout.php" class="block px-4 py-2 text-red-600 hover:bg-red-50">🚪 Logout</a>
             </div>
-            <h1 class="text-4xl font-bold text-white mb-2">
-                <span class="text-green-300 drop-shadow-lg">Welcome</span>
-                🎓Your Student
-                <span class="text-yellow-300 drop-shadow-lg">DashBoard</span>
-            </h1>
-            <nav class="flex gap-10 text-lg font-medium">
-                <a href="notification.php?student_id=<?= urlencode($student_id) ?>" class="hover:text-yellow-300 transition-all duration-300">🔔 Notifications</a>
-                <a href="Student_borrow_history.php?student_id=<?= urlencode($_SESSION['student_id']) ?>" class="hover:text-yellow-300 transition-all duration-300">📜 Borrowing History</a>
-                <a href="bookList.php?student_id=<?= urlencode($_SESSION['student_id']) ?>" class="hover:text-yellow-300 transition-all duration-300">📚 Book List</a>
-            </nav>
         </div>
     </header>
 
+    <!-- Main Body -->
     <main class="container mx-auto px-4 py-10">
         <section class="bg-white rounded-xl shadow-2xl p-6 max-w-3xl mx-auto animate-fade-in-up">
             <h2 class="text-2xl font-semibold text-indigo-700 mb-4">🛒 Your Borrow Cart</h2>
@@ -68,23 +77,24 @@ if (!isset($_SESSION['student_name']) || !isset($_SESSION['student_id'])) {
         </section>
     </main>
 
+    <!-- JS -->
     <script>
-        // Profile dropdown
-        document.addEventListener('DOMContentLoaded', function () {
+        // Profile dropdown toggle
+        document.addEventListener('DOMContentLoaded', () => {
             const btn = document.getElementById('profileBtn');
             const dropdown = document.getElementById('profileDropdown');
+
             btn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                dropdown.classList.toggle('opacity-0');
-                dropdown.classList.toggle('pointer-events-none');
+                dropdown.classList.toggle('hidden');
             });
+
             document.addEventListener('click', function () {
-                dropdown.classList.add('opacity-0');
-                dropdown.classList.add('pointer-events-none');
+                dropdown.classList.add('hidden');
             });
         });
 
-        // Borrow cart logic
+        // Borrow Cart
         const cartItems = document.getElementById("cart-items");
         const emptyMsg = document.getElementById("empty-cart");
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -106,20 +116,19 @@ if (!isset($_SESSION['student_name']) || !isset($_SESSION['student_id'])) {
             }
         }
 
-        // Remove from cart
         window.removeFromCart = function (idx) {
             cart.splice(idx, 1);
             localStorage.setItem("cart", JSON.stringify(cart));
             updateCart();
         };
 
-        // Run AI API on load
+        // Run AI API
         fetch('../ai_book_action_api.php')
             .then(res => res.json())
             .then(data => console.log("AI API:", data))
             .catch(err => console.error("AI API error", err));
 
-        // Fetch borrowed books if cart is empty
+        // Borrowed books
         function fetchBorrowedBooks() {
             fetch("get_borrowed_books.php")
                 .then(res => res.json())
@@ -151,4 +160,5 @@ if (!isset($_SESSION['student_name']) || !isset($_SESSION['student_id'])) {
         updateCart();
     </script>
 </body>
+
 </html>
