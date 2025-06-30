@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 30, 2025 at 03:05 AM
+-- Generation Time: Jun 30, 2025 at 06:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,11 +54,11 @@ CREATE TABLE `bookimage` (
 --
 
 INSERT INTO `bookimage` (`book_id`, `cover_img`, `side_img`, `back_img`, `pdf_path`) VALUES
-(3, 'Book Images/book_B1/cover.jpg', 'Book Images/book_B1/side.jpg', 'Book Images/book_B1/back.jpg', 'Book Images/book_B1/book.pdf'),
-(5, 'Book Images/book_B2/cover.jpg', 'Book Images/book_B2/side.jpg', 'Book Images/book_B2/back.jpg', 'Book Images/book_B2/book.pdf'),
-(6, 'Book Images/book_B3/cover.jpg', 'Book Images/book_B3/side.jpg', 'Book Images/book_B3/back.jpg', 'Book Images/book_B3/book.pdf'),
-(7, 'Book Images/book_B4/cover.jpg', 'Book Images/book_B4/side.jpg', 'Book Images/book_B4/back.jpg', 'Book Images/book_B4/book.pdf'),
-(8, 'Book Images/book_B5/cover.jpg', 'Book Images/book_B5/side.jpg', 'Book Images/book_B5/back.jpg', 'Book Images/book_B5/book.pdf');
+(3, 'Book Images/book_B1/cover.jpg', 'Book Images/book_B1/side.jpg', 'Book Images/book_B1/back.jpg', '../Book Images/book_107/book.pdf'),
+(5, 'Book Images/book_B2/cover.jpg', 'Book Images/book_B2/side.jpg', 'Book Images/book_B2/back.jpg', '../Book Images/book_107/book.pdf'),
+(6, 'Book Images/book_B3/cover.jpg', 'Book Images/book_B3/side.jpg', 'Book Images/book_B3/back.jpg', '../Book Images/book_107/book.pdf'),
+(7, 'Book Images/book_B4/cover.jpg', 'Book Images/book_B4/side.jpg', 'Book Images/book_B4/back.jpg', '../Book Images/book_107/book.pdf'),
+(8, 'Book Images/book_B5/cover.jpg', 'Book Images/book_B5/side.jpg', 'Book Images/book_B5/back.jpg', '../Book Images/book_107/book.pdf');
 
 -- --------------------------------------------------------
 

@@ -87,10 +87,6 @@ $result = $stmt->get_result();
                         <?php endif; ?>
                     </td>
                     <td class="py-4 px-6 space-y-2 flex flex-col items-stretch">
-                        <button onclick="addToCart(<?= $row['book_id'] ?>, '<?= addslashes($row['book_name']) ?>')"
-                                class="w-full flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full shadow transition-all duration-200 font-semibold text-sm">
-                            Add to Cart
-                        </button>
                         <button onclick="addToWishlist('<?= addslashes($row['book_name']) ?>')"
                                 class="w-full flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-full shadow transition-all duration-200 font-semibold text-sm">
                             Add to Wishlist
