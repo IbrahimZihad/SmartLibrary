@@ -32,7 +32,7 @@ JOIN students s ON bh.student_id = s.student_id
 JOIN booklist b ON bh.book_id = b.book_id
 JOIN penalty p ON bh.student_id = p.student_id
 WHERE bh.return_date > bh.due_date 
-  AND p.status = 'not paid'
+  AND p.status = ''
   AND (s.student_id LIKE '%$search%' OR s.name LIKE '%$search%')
 ORDER BY bh.due_date DESC
 ";
@@ -58,7 +58,7 @@ $result = $conn->query($query);
             <ul class="nav flex-column">
                 <li class="nav-item"><a href="adminDashboard.php" class="nav-link text-white">Dashboard</a></li>
                 <li class="nav-item"><a href="studentList.php" class="nav-link text-white">Student List</a></li>
-                <li class="nav-item"><a href="adminBookList.php" class="nav-link text-white">Book List</a></li>
+                <li class="nav-item"><a href="bookList.php" class="nav-link text-white">Book List</a></li>
                 <li class="nav-item"><a href="penaltyList.php" class="nav-link text-white fw-bold">Penalty List</a></li>
                 <li class="nav-item"><a href="borrowedList.php" class="nav-link text-white">Borrowed Books</a></li>
             </ul>
