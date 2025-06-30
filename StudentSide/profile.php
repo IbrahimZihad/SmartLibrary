@@ -73,7 +73,7 @@ if (!empty($user['front_img'])) {
 
             <!-- Back Button -->
             <div class="text-center mt-6">
-                <a href="StudentDashboad.php" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition-all duration-300">
+                <a href="StudentDashboard.php" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition-all duration-300">
                     ← Back to Dashboard
                 </a>
             </div>
